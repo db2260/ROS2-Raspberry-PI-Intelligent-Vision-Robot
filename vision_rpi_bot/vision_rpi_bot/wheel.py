@@ -67,7 +67,7 @@ def main(args=None):
     wheel_node = WheelNode()
 
     try:
-        #wheel_node.move_forward()
+        wheel_node.move_forward()
         wheel_node.move_backward()
         wheel_node.move_left()
         wheel_node.move_right()
