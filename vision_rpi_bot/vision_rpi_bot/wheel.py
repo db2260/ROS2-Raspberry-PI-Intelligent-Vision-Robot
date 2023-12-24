@@ -4,12 +4,16 @@ from odrive import find_any
 from odrive.enums import AXIS_STATE_CLOSED_LOOP_CONTROL
 import time
 import fibre
+from geometry_msgs.msg import Twist
 
 
 class WheelNode(Node):
 
     def __init__(self):
         super().__init__('wheel_node')
+        self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
+        self.timer_ = self.create_timer(0.1, self.publish_velocity)
+        self.get_logger().info('Wheel node initialized')
         self.odrv0 = find_any()
         self.move_forward()
 
@@ -61,13 +65,19 @@ class WheelNode(Node):
         ## Reconnect to the ODrive
         self.odrv0 = find_any()
 
+    def publish_velocity(self):
+        twist_msg = Twist()
+        twist_msg.linear.x = 0.5
+        twist_msg.angular.z = 0.2
+        self.publisher_.publish(twist_msg)
+
 
 def main(args=None):
     rclpy.init(args=args)
     wheel_node = WheelNode()
 
     try:
-        wheel_node.move_forward()
+        #wheel_node.move_forward()
         wheel_node.move_backward()
         wheel_node.move_left()
         wheel_node.move_right()
