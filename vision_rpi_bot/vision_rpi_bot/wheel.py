@@ -75,6 +75,7 @@ class WheelNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     wheel_node = WheelNode()
+    rclpy.spin(wheel_node)
 
     try:
         #wheel_node.move_forward()
